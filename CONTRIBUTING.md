@@ -53,7 +53,7 @@ npm run preview      # Serve the production build locally
 - Co-locate tests with the code they cover and add coverage for new behavior or
   bug fixes.
 - End-to-end tests live in a separate repository
-  (`LowBudgetMan/retro-tests`) and run automatically in CI against the built
+  (`Bonfire-Retro/retro-tests`) and run automatically in CI against the built
   image — you don't need to run them locally for most changes.
 
 ## Code Style
