@@ -1,8 +1,9 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import {RetroColumn} from './RetroColumn.tsx';
 import '@testing-library/jest-dom';
 import {DateTime} from 'luxon';
 import {Thought} from "../../../../services/retro-service/RetroService.ts";
+import {SortValue} from "../sort-toggle/SortValue.ts";
 
 describe('RetroColumn', () => {
   const mockCategory = {
@@ -33,6 +34,7 @@ describe('RetroColumn', () => {
         retroId="retro-123"
         category={mockCategory}
         thoughts={mockThoughts}
+        sortValue={SortValue.TIME}
       />
     );
     
@@ -53,6 +55,7 @@ describe('RetroColumn', () => {
             retroId="retro-123"
             category={mockCategory}
             thoughts={mixedThoughts}
+            sortValue={SortValue.TIME}
         />
     );
 
@@ -69,8 +72,8 @@ describe('RetroColumn', () => {
             { id: 'thought-5', completed: true, message: 'Completed high votes', votes: 4 } as unknown as Thought,
         ];
 
-        test('does not sort thoughts by votes when sorting is disabled', () => {
-            render(<RetroColumn teamId="team-456" retroId="retro-123" category={mockCategory} thoughts={thoughtsWithVotes}/>);
+        test('does not sort thoughts by votes when sorting by time', () => {
+            render(<RetroColumn teamId="team-456" retroId="retro-123" category={mockCategory} thoughts={thoughtsWithVotes} sortValue={SortValue.TIME}/>);
             const thoughtElements = screen.getAllByRole('listitem');
 
             expect(thoughtElements[0]).toHaveTextContent('Low votes');
@@ -79,23 +82,14 @@ describe('RetroColumn', () => {
             expect(thoughtElements[3]).toHaveTextContent('Completed high votes');
         });
 
-        test('sorts thoughts by votes when sorting is enabled', () => {
-            render(<RetroColumn teamId="team-456" retroId="retro-123" category={mockCategory} thoughts={thoughtsWithVotes}/>);
-            fireEvent.click(screen.getByRole('button', {name: /sort went well by votes/i}));
+        test('sorts thoughts by votes when sorting by votes', () => {
+            render(<RetroColumn teamId="team-456" retroId="retro-123" category={mockCategory} thoughts={thoughtsWithVotes} sortValue={SortValue.VOTES}/>);
             const thoughtElements = screen.getAllByRole('listitem');
 
             expect(thoughtElements[0]).toHaveTextContent('High votes');
             expect(thoughtElements[1]).toHaveTextContent('Low votes');
             expect(thoughtElements[2]).toHaveTextContent('Completed high votes');
             expect(thoughtElements[3]).toHaveTextContent('Completed low votes');
-        });
-
-        test('should toggle sort when sort button clicked', () => {
-            render(<RetroColumn teamId="team-456" retroId="retro-123" category={mockCategory} thoughts={thoughtsWithVotes}/>);
-            fireEvent.click(screen.getByRole('button', {name: /sort went well by votes/i}));
-            expect(screen.queryByRole('button', {name: /sort went well by time/i})).not.toBeNull();
-            fireEvent.click(screen.getByRole('button', {name: /sort went well by time/i}));
-            expect(screen.queryByRole('button', {name: /sort went well by votes/i})).not.toBeNull();
         });
     });
 });
