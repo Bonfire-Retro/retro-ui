@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import {RetroComponent} from './Retro.tsx';
 import '@testing-library/jest-dom';
 import {RetroColumn} from "./components/retro-column/RetroColumn.tsx";
@@ -10,6 +10,7 @@ import {useNavigate} from "react-router-dom";
 import {clearShareToken, hasShareToken} from "../../services/anonymous-auth/AnonymousAuthService.ts";
 import {MobileTabBar} from "./components/mobile-tab-bar/MobileTabBar.tsx";
 import {useIsMobile} from "../../hooks/useIsMobile";
+import {SortValue} from "./components/sort-toggle/SortValue.ts";
 
 vi.mock('react-router-dom', () => ({
   useLoaderData: vi.fn(),
@@ -164,6 +165,26 @@ describe('RetroComponent', () => {
         {}
     );
   });
+
+    it('passes the retro-wide sort value to each RetroColumn', () => {
+        render(<RetroComponent />);
+
+        expect(RetroColumn).toHaveBeenCalledWith(
+            expect.objectContaining({ sortValue: SortValue.TIME }),
+            {}
+        );
+    });
+
+    it('passes the updated sort value to each RetroColumn when the sort toggle is switched', () => {
+        render(<RetroComponent />);
+
+        fireEvent.click(screen.getByRole('switch'));
+
+        expect(RetroColumn).toHaveBeenLastCalledWith(
+            expect.objectContaining({ sortValue: SortValue.VOTES }),
+            {}
+        );
+    });
 
     it('should display the end retro button', () => {
         render(<RetroComponent />);

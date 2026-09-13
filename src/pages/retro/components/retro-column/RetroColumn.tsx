@@ -4,15 +4,17 @@ import {ThoughtCard} from "../thought-card/ThoughtCard.tsx";
 import styles from "./RetroColumn.module.css";
 import {CountSeparator} from "../count-separator/CountSeparator.tsx";
 import {Theme} from "../../../../context/theme/ThemeContextTypes.ts";
-import {useMemo, useState} from "react";
+import {useMemo} from "react";
 import {useTheme} from "../../../../context/hooks.tsx";
 import {ColumnHeader} from "../column-header/ColumnHeader.tsx";
+import {SortValue} from "../sort-toggle/SortValue.ts";
 
 interface RetroColumnProps {
     teamId: string;
     retroId: string;
     category: Category;
     thoughts: Thought[];
+    sortValue: SortValue;
     hidden?: boolean;
 }
 
@@ -21,9 +23,8 @@ export interface CategoryStyling {
     textColor: string
 }
 
-export function RetroColumn({teamId, retroId, category, thoughts, hidden}: RetroColumnProps) {
+export function RetroColumn({teamId, retroId, category, thoughts, sortValue, hidden}: RetroColumnProps) {
     const {getEffectiveTheme} = useTheme();
-    const [isSorting, setSorting] = useState(false);
     const categoryStyling: CategoryStyling = useMemo(() => {
         const theme = getEffectiveTheme();
         const backgroundColor = theme === Theme.DARK ? category.darkBackgroundColor : category.lightBackgroundColor;
@@ -34,25 +35,20 @@ export function RetroColumn({teamId, retroId, category, thoughts, hidden}: Retro
         }
     }, [getEffectiveTheme, category])
 
-    const handleSortToggle = () => {
-        setSorting((isSorting) => !isSorting);
-    }
-
     const sortedThoughts = useMemo(() => {
         let completedThoughts = [...thoughts.filter((thought) => thought.completed)];
         let incompleteThoughts = [...thoughts.filter((thought) => !thought.completed)];
-        if(isSorting) completedThoughts = completedThoughts.sort((a, b) => b.votes - a.votes)
-        if(isSorting) incompleteThoughts = incompleteThoughts.sort((a, b) => b.votes - a.votes)
+        const isSortingByVotes = sortValue === SortValue.VOTES;
+        if(isSortingByVotes) completedThoughts = completedThoughts.sort((a, b) => b.votes - a.votes)
+        if(isSortingByVotes) incompleteThoughts = incompleteThoughts.sort((a, b) => b.votes - a.votes)
         return [...incompleteThoughts, ...completedThoughts];
-    }, [thoughts, isSorting]);
+    }, [thoughts, sortValue]);
 
     return (
         <div key={`column${category.name}`} className={`${styles.retroCategory} ${hidden ? styles.hidden : ''}`}>
             <ColumnHeader
                 category={category}
                 styling={categoryStyling}
-                isSorting={isSorting}
-                toggleSort={handleSortToggle}
             />
             <div>
                 <CreateThought

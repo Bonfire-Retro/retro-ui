@@ -43,6 +43,7 @@ export function RetroComponent() {
                             teamId={retro.teamId}
                             retroId={retro.id}
                             category={category}
+                            sortValue={sortValue}
                             thoughts={retro.thoughts
                                 .filter(thought => thought.category === category.name)
                                  .sort((a, b) => a.createdAt.toMillis() - b.createdAt.toMillis())}
