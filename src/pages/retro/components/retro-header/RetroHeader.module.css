@@ -1,0 +1,31 @@
+.retroHeaderContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    align-items: center;
+    gap: 1.4rem;
+}
+
+.leftContent {
+    display: flex;
+    flex-direction: row;
+    gap: 1.4rem;
+    align-items: center;
+}
+
+.rightContent {
+    display: flex;
+    flex-direction: row;
+    gap: 1.4rem;
+    align-items: center;
+}
+
+@media (max-width: 767px) {
+    .retroHeaderContainer {
+        display: flex;
+        flex-direction: column;
+    }
+}

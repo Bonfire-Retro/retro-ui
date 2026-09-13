@@ -9,12 +9,14 @@ import {FocusThoughtModal} from "./components/focus-thought-modal/FocusThoughtMo
 import {useIsMobile} from "../../hooks/useIsMobile.ts";
 import {MobileTabBar, ACTION_ITEMS_TAB} from "./components/mobile-tab-bar/MobileTabBar.tsx";
 import {RetroHeader} from "./components/retro-header/RetroHeader.tsx";
+import {SortValue} from "./components/sort-toggle/SortValue.ts";
 
 export function RetroComponent() {
     const {retro} = useRetro();
     const navigate = useNavigate();
     const anonymous = hasShareToken(retro.id);
     const isMobile = useIsMobile();
+    const [sortValue, setSortValue] = useState(SortValue.TIME);
     const [activeTab, setActiveTab] = useState(retro.template.categories[0]?.name ?? '');
 
     useEffect(() => {
@@ -32,7 +34,7 @@ export function RetroComponent() {
 
     return (
         <div>
-            <RetroHeader isAnonymous={anonymous} retro={retro} />
+            <RetroHeader isAnonymous={anonymous} retro={retro} sorting={{sortValue, toggleSort: setSortValue}}/>
             <div className={`${style.retroColumnsContainer} ${isMobile ? style.mobileColumnsContainer : ''} ${isActionItemsActive ? style.mobileHidden : ''}`}>
                 <div className={style.retroColumns}>
                     {retro.template.categories.map(category => (
