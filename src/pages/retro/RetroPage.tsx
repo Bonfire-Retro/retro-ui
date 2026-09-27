@@ -3,15 +3,14 @@ import {RetroComponent} from "./Retro.tsx";
 import {ActionItemsContextProvider} from "../../context/action-items/ActionItemsContext.tsx";
 import {useLoaderData} from "react-router-dom";
 import {RetroPageLoaderData} from "./retroLoader.ts";
-import {hasShareToken} from "../../services/anonymous-auth/AnonymousAuthService.ts";
 
 export function RetroPage() {
-    const {retro, actionItems} = useLoaderData() as RetroPageLoaderData;
+    const {retro, actionItems, isTeamMember} = useLoaderData() as RetroPageLoaderData;
 
-    if (hasShareToken(retro.id)) {
+    if (!isTeamMember) {
         return (
             <RetroContextProvider retro={retro}>
-                <RetroComponent />
+                <RetroComponent anonymous={true} />
             </RetroContextProvider>
         )
     }
@@ -19,7 +18,7 @@ export function RetroPage() {
     return (
         <RetroContextProvider retro={retro}>
             <ActionItemsContextProvider teamId={retro.teamId} actionItems={actionItems}>
-                <RetroComponent />
+                <RetroComponent anonymous={false} />
             </ActionItemsContextProvider>
         </RetroContextProvider>
     )
