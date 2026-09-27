@@ -4,25 +4,28 @@ import {RetroColumn} from "./components/retro-column/RetroColumn.tsx";
 import {ActionItemsTab} from "./components/action-items/ActionItemsTab.tsx";
 import {useRetro} from "../../context/hooks.tsx";
 import {useEffect, useState} from "react";
-import {clearShareToken, hasShareToken} from "../../services/anonymous-auth/AnonymousAuthService.ts";
+import {clearShareToken} from "../../services/anonymous-auth/AnonymousAuthService.ts";
 import {FocusThoughtModal} from "./components/focus-thought-modal/FocusThoughtModal.tsx";
 import {useIsMobile} from "../../hooks/useIsMobile.ts";
 import {MobileTabBar, ACTION_ITEMS_TAB} from "./components/mobile-tab-bar/MobileTabBar.tsx";
 import {RetroHeader} from "./components/retro-header/RetroHeader.tsx";
 import {SortValue} from "./components/sort-toggle/SortValue.ts";
 
-export function RetroComponent() {
+interface RetroComponentProps {
+    anonymous: boolean;
+}
+
+export function RetroComponent({anonymous}: RetroComponentProps) {
     const {retro} = useRetro();
     const navigate = useNavigate();
-    const anonymous = hasShareToken(retro.id);
     const isMobile = useIsMobile();
     const [sortValue, setSortValue] = useState(SortValue.TIME);
     const [activeTab, setActiveTab] = useState(retro.template.categories[0]?.name ?? '');
 
     useEffect(() => {
         if(retro.finished) {
+            clearShareToken(retro.id);
             if (anonymous) {
-                clearShareToken(retro.id);
                 navigate('/');
             } else {
                 navigate(`/teams/${retro.teamId}`);

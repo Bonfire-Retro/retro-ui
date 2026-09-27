@@ -7,7 +7,7 @@ import {PropsWithChildren} from "react";
 import {useActionItems, useRetro} from "../../context/hooks.tsx";
 import {Mock} from "vitest";
 import {useNavigate} from "react-router-dom";
-import {clearShareToken, hasShareToken} from "../../services/anonymous-auth/AnonymousAuthService.ts";
+import {clearShareToken} from "../../services/anonymous-auth/AnonymousAuthService.ts";
 import {MobileTabBar} from "./components/mobile-tab-bar/MobileTabBar.tsx";
 import {useIsMobile} from "../../hooks/useIsMobile";
 import {SortValue} from "./components/sort-toggle/SortValue.ts";
@@ -52,7 +52,6 @@ vi.mock('./components/retro-column/RetroColumn.tsx', () => ({
 }));
 
 vi.mock('../../services/anonymous-auth/AnonymousAuthService.ts', () => ({
-    hasShareToken: vi.fn(),
     clearShareToken: vi.fn(),
 }));
 
@@ -119,11 +118,10 @@ describe('RetroComponent', () => {
     vi.clearAllMocks();
     (useRetro as Mock).mockReturnValue({ retro: mockRetro });
     (useActionItems as Mock).mockReturnValue({ actionItems: [] });
-    (hasShareToken as Mock).mockReturnValue(false);
   });
 
   it('renders retro component with correct categories', () => {
-    render(<RetroComponent />);
+    render(<RetroComponent anonymous={false} />);
 
     expect(screen.getByText(/Basic Retro/)).toBeInTheDocument();
     expect(RetroColumn).toHaveBeenCalledWith(expect.objectContaining({ category: mockRetro.template.categories[0] }), {});
@@ -156,7 +154,7 @@ describe('RetroComponent', () => {
       },
     });
 
-    render(<RetroComponent />);
+    render(<RetroComponent anonymous={false} />);
 
     expect(RetroColumn).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -167,7 +165,7 @@ describe('RetroComponent', () => {
   });
 
     it('passes the retro-wide sort value to each RetroColumn', () => {
-        render(<RetroComponent />);
+        render(<RetroComponent anonymous={false} />);
 
         expect(RetroColumn).toHaveBeenCalledWith(
             expect.objectContaining({ sortValue: SortValue.TIME }),
@@ -176,7 +174,7 @@ describe('RetroComponent', () => {
     });
 
     it('passes the updated sort value to each RetroColumn when the sort toggle is switched', () => {
-        render(<RetroComponent />);
+        render(<RetroComponent anonymous={false} />);
 
         fireEvent.click(screen.getByRole('switch'));
 
@@ -187,7 +185,7 @@ describe('RetroComponent', () => {
     });
 
     it('should display the end retro button', () => {
-        render(<RetroComponent />);
+        render(<RetroComponent anonymous={false} />);
         expect(screen.getByText('End Retro')).toBeInTheDocument();
     });
 
@@ -195,40 +193,43 @@ describe('RetroComponent', () => {
         const mockNavigate = vi.fn();
         (useNavigate as Mock).mockReturnValue(mockNavigate);
         (useRetro as Mock).mockReturnValue({ retro: {...mockRetro, finished: true } });
-        render(<RetroComponent />);
+        render(<RetroComponent anonymous={false} />);
         expect(mockNavigate).toHaveBeenCalledWith(`/teams/${mockRetro.teamId}`);
+    });
+
+    it('should clear any share token when finished for a team member', () => {
+        (useNavigate as Mock).mockReturnValue(vi.fn());
+        (useRetro as Mock).mockReturnValue({ retro: {...mockRetro, finished: true } });
+        render(<RetroComponent anonymous={false} />);
+        expect(clearShareToken).toHaveBeenCalledWith('retro-123');
     });
 
     it('should not redirect if finished is false', () => {
         const mockNavigate = vi.fn();
         (useNavigate as Mock).mockReturnValue(mockNavigate);
         (useRetro as Mock).mockReturnValue({ retro: {...mockRetro, finished: false } });
-        render(<RetroComponent />);
+        render(<RetroComponent anonymous={false} />);
         expect(mockNavigate).not.toHaveBeenCalled();
     });
 
     describe('anonymous mode', () => {
-        beforeEach(() => {
-            (hasShareToken as Mock).mockReturnValue(true);
-        });
-
         it('should hide the back link in anonymous mode', () => {
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={true} />);
             expect(screen.queryByText('<')).not.toBeInTheDocument();
         });
 
         it('should hide the End Retro button in anonymous mode', () => {
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={true} />);
             expect(screen.queryByText('End Retro')).not.toBeInTheDocument();
         });
 
         it('should hide the Share button in anonymous mode', () => {
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={true} />);
             expect(screen.queryByText('Share')).not.toBeInTheDocument();
         });
 
         it('should hide the ActionItemsTab in anonymous mode', () => {
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={true} />);
             expect(screen.queryByText('Action Items')).not.toBeInTheDocument();
         });
 
@@ -236,24 +237,20 @@ describe('RetroComponent', () => {
             const mockNavigate = vi.fn();
             (useNavigate as Mock).mockReturnValue(mockNavigate);
             (useRetro as Mock).mockReturnValue({ retro: {...mockRetro, finished: true } });
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={true} />);
             expect(clearShareToken).toHaveBeenCalledWith('retro-123');
             expect(mockNavigate).toHaveBeenCalledWith('/');
         });
     });
 
     describe('authenticated mode', () => {
-        beforeEach(() => {
-            (hasShareToken as Mock).mockReturnValue(false);
-        });
-
         it('should show the back link', () => {
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={false} />);
             expect(screen.getByText('<')).toBeInTheDocument();
         });
 
         it('should show the Share button', () => {
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={false} />);
             expect(screen.getByText('Share')).toBeInTheDocument();
         });
     });
@@ -261,11 +258,10 @@ describe('RetroComponent', () => {
     describe('mobile mode', () => {
         beforeEach(() => {
             (useIsMobile as Mock).mockReturnValue(true);
-            (hasShareToken as Mock).mockReturnValue(false);
         });
 
         it('should render MobileTabBar on mobile', () => {
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={false} />);
             expect(MobileTabBar).toHaveBeenCalledWith(
                 expect.objectContaining({
                     categories: mockRetro.template.categories,
@@ -278,13 +274,12 @@ describe('RetroComponent', () => {
 
         it('should not render MobileTabBar on desktop', () => {
             (useIsMobile as Mock).mockReturnValue(false);
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={false} />);
             expect(MobileTabBar).not.toHaveBeenCalled();
         });
 
         it('should hide Action Items tab for anonymous users on mobile', () => {
-            (hasShareToken as Mock).mockReturnValue(true);
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={true} />);
             expect(MobileTabBar).toHaveBeenCalledWith(
                 expect.objectContaining({
                     showActionItems: false,
@@ -294,7 +289,7 @@ describe('RetroComponent', () => {
         });
 
         it('should default active tab to first category', () => {
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={false} />);
             expect(MobileTabBar).toHaveBeenCalledWith(
                 expect.objectContaining({
                     activeTab: 'Went Well',
@@ -304,7 +299,7 @@ describe('RetroComponent', () => {
         });
 
         it('should always render all RetroColumns on mobile (all stay mounted)', () => {
-            render(<RetroComponent />);
+            render(<RetroComponent anonymous={false} />);
             expect(RetroColumn).toHaveBeenCalledTimes(2);
         });
     });
