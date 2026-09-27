@@ -16,6 +16,12 @@
     align-items: center;
 }
 
+.templateName {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .rightContent {
     display: flex;
     flex-direction: row;
