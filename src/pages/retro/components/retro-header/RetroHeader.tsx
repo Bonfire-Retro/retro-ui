@@ -5,6 +5,7 @@ import {ShareButton} from "../share-button/ShareButton.tsx";
 import {EndRetroButton} from "../end-retro-button/EndRetroButton.tsx";
 import {SortToggle} from "../sort-toggle/SortToggle.tsx";
 import {SortValue} from "../sort-toggle/SortValue.ts";
+import {RetroDescriptionModal} from "../retro-description-modal/RetroDescriptionModal.tsx";
 
 interface SortState {
     sortValue: SortValue;
@@ -21,7 +22,10 @@ export function RetroHeader({isAnonymous, retro, sorting}: RetroHeaderProps) {
     return (<h1 className={style.retroHeaderContainer}>
         <span className={style.leftContent}>
             {!isAnonymous && <Link to={`/teams/${retro.teamId}`} className={'breadcrumb'}>&lt;</Link>}
-            {retro.template.name}
+            <span className={style.templateName}>
+                {retro.template.name}
+                <RetroDescriptionModal template={retro.template} />
+            </span>
         </span>
         <span className={style.rightContent}>
             <SortToggle sortValue={sorting.sortValue} onToggle={sorting.toggleSort} />

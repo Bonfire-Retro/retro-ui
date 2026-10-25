@@ -1,0 +1,119 @@
+.infoButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.infoButton:hover {
+    color: var(--text-primary);
+}
+
+.dialog {
+    margin: auto;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    max-width: min(60rem, 92vw);
+    max-height: 85vh;
+    overflow: hidden;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+}
+
+.dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 3px solid var(--border-color);
+}
+
+.title {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    color: inherit;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.description {
+    margin: 0;
+    max-width: 70ch;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.column h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.columnDescription {
+    margin: 0;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 767px) {
+    .dialog {
+        width: 100vw;
+        max-width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .container {
+        height: 100%;
+        max-height: 100vh;
+    }
+
+    .columns {
+        grid-template-columns: 1fr;
+    }
+}

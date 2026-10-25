@@ -3,9 +3,8 @@ import {CreateThought} from "../create-thought/CreateThought.tsx";
 import {ThoughtCard} from "../thought-card/ThoughtCard.tsx";
 import styles from "./RetroColumn.module.css";
 import {CountSeparator} from "../count-separator/CountSeparator.tsx";
-import {Theme} from "../../../../context/theme/ThemeContextTypes.ts";
 import {useMemo} from "react";
-import {useTheme} from "../../../../context/hooks.tsx";
+import {useCategoryStyling} from "../../../../context/hooks.tsx";
 import {ColumnHeader} from "../column-header/ColumnHeader.tsx";
 import {SortValue} from "../sort-toggle/SortValue.ts";
 
@@ -18,22 +17,8 @@ interface RetroColumnProps {
     hidden?: boolean;
 }
 
-export interface CategoryStyling {
-    backgroundColor: string;
-    textColor: string
-}
-
 export function RetroColumn({teamId, retroId, category, thoughts, sortValue, hidden}: RetroColumnProps) {
-    const {getEffectiveTheme} = useTheme();
-    const categoryStyling: CategoryStyling = useMemo(() => {
-        const theme = getEffectiveTheme();
-        const backgroundColor = theme === Theme.DARK ? category.darkBackgroundColor : category.lightBackgroundColor;
-        const textColor = theme === Theme.DARK ? category.darkTextColor : category.lightTextColor;
-        return {
-            backgroundColor,
-            textColor
-        }
-    }, [getEffectiveTheme, category])
+    const categoryStyling = useCategoryStyling(category);
 
     const sortedThoughts = useMemo(() => {
         let completedThoughts = [...thoughts.filter((thought) => thought.completed)];
