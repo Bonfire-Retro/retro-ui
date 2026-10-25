@@ -34,6 +34,7 @@ describe('transformCategoryColors', () => {
     it('converts all four color fields to oklch', () => {
         const category: Category = {
             name: 'Start',
+            description: 'Start description',
             position: 1,
             lightBackgroundColor: '#e8f5e8',
             lightTextColor: '#2d5a2d',
@@ -45,6 +46,7 @@ describe('transformCategoryColors', () => {
 
         expect(result).toEqual({
             name: 'Start',
+            description: 'Start description',
             position: 1,
             lightBackgroundColor: hexToOklch('#e8f5e8'),
             lightTextColor: hexToOklch('#2d5a2d'),
@@ -56,6 +58,7 @@ describe('transformCategoryColors', () => {
     it('leaves name and position untouched', () => {
         const category: Category = {
             name: 'Stop',
+            description: 'Stop description',
             position: 2,
             lightBackgroundColor: '#ffe8e8',
             lightTextColor: '#5a2d2d',

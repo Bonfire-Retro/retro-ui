@@ -14,6 +14,7 @@ vi.mock('../../../../context/hooks', () => ({
 const categories: Category[] = [
     {
         name: 'Went Well',
+        description: 'Went Well description',
         position: 0,
         lightBackgroundColor: '#e6ffed',
         lightTextColor: '#000',
@@ -22,6 +23,7 @@ const categories: Category[] = [
     },
     {
         name: 'Needs Improvement',
+        description: 'Needs Improvement description',
         position: 1,
         lightBackgroundColor: '#ffeef0',
         lightTextColor: '#000',

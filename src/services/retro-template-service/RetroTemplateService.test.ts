@@ -48,6 +48,7 @@ describe('RetroTemplateService', () => {
                     categories: [
                         {
                             name: 'Start',
+                            description: 'Start description',
                             position: 1,
                             lightBackgroundColor: '#e8f5e8',
                             lightTextColor: '#2d5a2d',
@@ -56,6 +57,7 @@ describe('RetroTemplateService', () => {
                         },
                         {
                             name: 'Stop',
+                            description: 'Stop description',
                             position: 2,
                             lightBackgroundColor: '#ffe8e8',
                             lightTextColor: '#5a2d2d',
@@ -64,6 +66,7 @@ describe('RetroTemplateService', () => {
                         },
                         {
                             name: 'Continue',
+                            description: 'Continue description',
                             position: 3,
                             lightBackgroundColor: '#e8f0ff',
                             lightTextColor: '#2d3d5a',
@@ -79,6 +82,7 @@ describe('RetroTemplateService', () => {
                     categories: [
                         {
                             name: 'What Went Well',
+                            description: 'What Went Well description',
                             position: 1,
                             lightBackgroundColor: '#e8f5e8',
                             lightTextColor: '#2d5a2d',
@@ -87,6 +91,7 @@ describe('RetroTemplateService', () => {
                         },
                         {
                             name: 'What Could Be Improved',
+                            description: 'What Could Be Improved description',
                             position: 2,
                             lightBackgroundColor: '#fff8e8',
                             lightTextColor: '#5a4d2d',
@@ -162,6 +167,7 @@ describe('RetroTemplateService', () => {
                 categories: [
                     {
                         name: 'Category 1',
+                        description: 'Category 1 description',
                         position: 1,
                         lightBackgroundColor: '#ffffff',
                         lightTextColor: '#000000',
@@ -170,6 +176,7 @@ describe('RetroTemplateService', () => {
                     },
                     {
                         name: 'Category 2',
+                        description: 'Category 2 description',
                         position: 2,
                         lightBackgroundColor: '#f0f0f0',
                         lightTextColor: '#333333',
@@ -178,6 +185,7 @@ describe('RetroTemplateService', () => {
                     },
                     {
                         name: 'Category 3',
+                        description: 'Category 3 description',
                         position: 3,
                         lightBackgroundColor: '#e0e0e0',
                         lightTextColor: '#666666',

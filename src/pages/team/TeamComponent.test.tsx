@@ -55,6 +55,7 @@ describe('TeamComponent', () => {
             categories: [
                 {
                     name: 'Start',
+                    description: 'Start description',
                     position: 0,
                     lightBackgroundColor: '#e8f5e8',
                     lightTextColor: '#2d5a2d',
@@ -70,6 +71,7 @@ describe('TeamComponent', () => {
             categories: [
                 {
                     name: 'Mad',
+                    description: 'Mad description',
                     position: 0,
                     lightBackgroundColor: '#ffe8e8',
                     lightTextColor: '#5a2d2d',

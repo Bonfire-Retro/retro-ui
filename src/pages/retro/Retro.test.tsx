@@ -96,6 +96,7 @@ describe('RetroComponent', () => {
       categories: [
         {
           name: 'Went Well',
+          description: 'Went Well description',
           position: 0,
           lightBackgroundColor: '#e6ffed',
           lightTextColor: '#000',
@@ -104,6 +105,7 @@ describe('RetroComponent', () => {
         },
         {
           name: 'Needs Improvement',
+          description: 'Needs Improvement description',
           position: 1,
           lightBackgroundColor: '#ffeef0',
           lightTextColor: '#000',

@@ -13,6 +13,7 @@ describe('CategoryList', () => {
         const categories: Category[] = [
             {
                 name: "column2",
+                description: "column2 description",
                 position: 2,
                 lightBackgroundColor: "#ff00ff",
                 lightTextColor: "#00ff00",
@@ -21,6 +22,7 @@ describe('CategoryList', () => {
             },
             {
                 name: "column1",
+                description: "column1 description",
                 position: 1,
                 lightBackgroundColor: "#ffffff",
                 lightTextColor: "#000000",

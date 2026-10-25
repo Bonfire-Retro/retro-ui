@@ -77,6 +77,7 @@ describe('RetroService', () => {
                     categories: [
                         {
                             name: 'Start',
+                            description: 'Start description',
                             position: 1,
                             lightBackgroundColor: '#e8f5e8',
                             lightTextColor: '#2d5a2d',
@@ -97,6 +98,7 @@ describe('RetroService', () => {
                     categories: [
                         {
                             name: 'Start',
+                            description: 'Start description',
                             position: 1,
                             lightBackgroundColor: hexToOklch('#e8f5e8'),
                             lightTextColor: hexToOklch('#2d5a2d'),
