@@ -8,6 +8,7 @@ import {SortValue} from "../sort-toggle/SortValue.ts";
 describe('RetroColumn', () => {
   const mockCategory = {
     name: 'Went Well',
+    description: 'Went Well description',
     position: 0,
     lightBackgroundColor: '#e6ffed',
     lightTextColor: '#000',
