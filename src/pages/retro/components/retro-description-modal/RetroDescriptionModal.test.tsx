@@ -34,10 +34,20 @@ describe('RetroDescriptionModal', () => {
         fireEvent.click(screen.getByRole('button', {name: 'Retro description'}));
     }
 
-    it('should not show the description until the info button is clicked', () => {
+    function getDialog() {
+        return screen.getByRole('dialog', {hidden: true}) as HTMLDialogElement;
+    }
+
+    it('should not open the dialog until the info button is clicked', () => {
         render(<RetroDescriptionModal template={template} />);
 
-        expect(screen.queryByText(template.description)).not.toBeInTheDocument();
+        expect(getDialog().open).toBe(false);
+    });
+
+    it('should open the dialog when the info button is clicked', () => {
+        openModal();
+
+        expect(getDialog().open).toBe(true);
     });
 
     it('should show the template name and description when the info button is clicked', () => {
@@ -72,17 +82,17 @@ describe('RetroDescriptionModal', () => {
     it('should close when the close button is clicked', () => {
         openModal();
 
-        fireEvent.click(screen.getByRole('button', {name: 'Close modal'}));
+        fireEvent.click(screen.getByRole('button', {name: 'Close retro description'}));
 
-        expect(screen.queryByText(template.description)).not.toBeInTheDocument();
+        expect(getDialog().open).toBe(false);
     });
 
     it('should close when the backdrop is clicked', () => {
         openModal();
 
-        fireEvent.click(screen.getByRole('dialog'));
+        fireEvent.click(getDialog());
 
-        expect(screen.queryByText(template.description)).not.toBeInTheDocument();
+        expect(getDialog().open).toBe(false);
     });
 
     it('should stay open when the dialog content is clicked', () => {
@@ -90,15 +100,7 @@ describe('RetroDescriptionModal', () => {
 
         fireEvent.click(screen.getByText(template.description));
 
-        expect(screen.getByText(template.description)).toBeInTheDocument();
-    });
-
-    it('should reset when the dialog is dismissed by the browser', () => {
-        openModal();
-
-        fireEvent(screen.getByRole('dialog'), new Event('close'));
-
-        expect(screen.queryByText(template.description)).not.toBeInTheDocument();
+        expect(getDialog().open).toBe(true);
     });
 
     it('should not show a description paragraph when the template has no description', () => {

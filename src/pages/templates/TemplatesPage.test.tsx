@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { TemplatesPage } from './TemplatesPage';
 import { useLoaderData } from 'react-router-dom';
 import { TemplatesPageData } from './templatesLoader';
@@ -13,6 +13,7 @@ vi.mock('../../context/hooks.tsx', () => ({
   useTheme: () => ({
     theme: 'light'
   }),
+  useCategoryStyling: () => ({ backgroundColor: '#ffffff', textColor: '#000000' }),
   Theme: {
     LIGHT: 'light',
     DARK: 'dark',
@@ -167,6 +168,33 @@ describe('TemplatesPage', () => {
       
       expect(screen.getByText('What went well')).toBeInTheDocument();
       expect(screen.getByText('What could be improved')).toBeInTheDocument();
+    });
+
+    it('should render a description for each category', () => {
+      render(<TemplatesPage />);
+
+      expect(screen.getByText('Start description')).toBeInTheDocument();
+      expect(screen.getByText('Mad description')).toBeInTheDocument();
+      expect(screen.getByText('What could be improved description')).toBeInTheDocument();
+    });
+
+    it('should render category headers in position order', () => {
+      const reversed = { ...mockTemplates[0], categories: [...mockTemplates[0].categories].reverse() };
+      (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({ templates: [reversed] });
+
+      render(<TemplatesPage />);
+
+      const columns = screen.getAllByRole('listitem');
+      expect(within(columns[0]).getByRole('heading', { name: 'Start' })).toBeInTheDocument();
+      expect(within(columns[2]).getByRole('heading', { name: 'Continue' })).toBeInTheDocument();
+    });
+
+    it('should not render a description paragraph when a template has no description', () => {
+      (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({ templates: [{ ...mockTemplates[0], description: '' }] });
+
+      render(<TemplatesPage />);
+
+      expect(screen.queryByTestId('retro-description')).not.toBeInTheDocument();
     });
 
     it('should set template id as heading id attribute', () => {

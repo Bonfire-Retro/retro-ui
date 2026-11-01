@@ -1,0 +1,52 @@
+.retroDescription {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.description {
+    margin: 0;
+    max-width: 70ch;
+    line-height: 1.6;
+    padding-bottom: 1rem;
+    color: var(--text-secondary);
+
+    font-size: 1rem;
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.column h2 {
+    margin: 0;
+    box-sizing: border-box;
+    min-height: var(--header-height, auto);
+    font-size: 1rem;
+}
+
+.columnDescription {
+    margin: 0;
+    line-height: 1.5;
+    padding-bottom: 1rem;
+    color: var(--text-secondary);
+
+    font-size: 1rem;
+}
+
+@media (max-width: 767px) {
+    .columns {
+        grid-template-columns: 1fr;
+    }
+}
