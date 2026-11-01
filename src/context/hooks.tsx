@@ -22,6 +22,23 @@ export function useToasts() {
     return useContext(ToastContext);
 }
 
+export interface CategoryStyling {
+    backgroundColor: string;
+    textColor: string;
+}
+
+export function useCategoryStyling(category: Category): CategoryStyling {
+    const {getEffectiveTheme} = useTheme();
+
+    return useMemo(() => {
+        const isDark = getEffectiveTheme() === Theme.DARK;
+        return {
+            backgroundColor: isDark ? category.darkBackgroundColor : category.lightBackgroundColor,
+            textColor: isDark ? category.darkTextColor : category.lightTextColor
+        };
+    }, [category, getEffectiveTheme]);
+}
+
 export function useCategoryBackgroundColor(category: Category | undefined): string | undefined {
     const {getEffectiveTheme} = useTheme();
 

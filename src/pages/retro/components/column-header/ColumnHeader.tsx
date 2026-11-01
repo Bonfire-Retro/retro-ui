@@ -1,4 +1,4 @@
-import {CategoryStyling} from "../retro-column/RetroColumn.tsx";
+import {CategoryStyling} from "../../../../context/hooks.tsx";
 import {Category} from "../../../../services/retro-service/RetroService.ts";
 import styles from './ColumnHeader.module.css';
 

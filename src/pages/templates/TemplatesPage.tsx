@@ -1,24 +1,25 @@
+import {Fragment} from "react";
 import {useLoaderData} from "react-router-dom";
 import {TemplatesPageData} from "./templatesLoader.ts";
-import {Template} from "../../services/retro-service/RetroService.ts";
-import {useCallback} from "react";
-import {CategoryList} from "../../components/category-list/CategoryList.tsx";
+import {RetroDescription} from "../../components/retro-description/RetroDescription.tsx";
+import {CountSeparator} from "../retro/components/count-separator/CountSeparator.tsx";
+import styles from "./TemplatesPage.module.css";
 
 export function TemplatesPage() {
     const {templates} = useLoaderData() as TemplatesPageData;
 
-    const displayTemplate = useCallback((template: Template) => {
-        return (<section key={template.id}>
-            <h2 id={template.id}>{template.name}</h2>
-            <CategoryList categories={template.categories} />
-            <p>{template.description}</p>
-        </section>)
-    }, [])
-
     return (
-        <div>
+        <div className={styles.templatesPage}>
             <h1>Retro Templates</h1>
-            {templates.map((template) => displayTemplate(template))}
+            {templates.map((template, index) => (
+                <Fragment key={template.id}>
+                    {index > 0 && <CountSeparator/>}
+                    <section className={styles.template}>
+                        <h2 id={template.id} className={styles.templateName}>{template.name}</h2>
+                        <RetroDescription template={template}/>
+                    </section>
+                </Fragment>
+            ))}
         </div>
     )
 }

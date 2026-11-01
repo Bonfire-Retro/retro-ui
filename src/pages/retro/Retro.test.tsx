@@ -45,6 +45,7 @@ vi.mock('./components/mobile-tab-bar/MobileTabBar.tsx', () => ({
 vi.mock('../../context/hooks.tsx', () => ({
   useRetro: vi.fn(),
   useActionItems: vi.fn(),
+  useCategoryStyling: vi.fn(() => ({backgroundColor: '#ffffff', textColor: '#000000'})),
 }));
 
 vi.mock('./components/retro-column/RetroColumn.tsx', () => ({
@@ -125,7 +126,7 @@ describe('RetroComponent', () => {
   it('renders retro component with correct categories', () => {
     render(<RetroComponent anonymous={false} />);
 
-    expect(screen.getByText(/Basic Retro/)).toBeInTheDocument();
+    expect(screen.getByText(/Basic Retro/, {selector: 'span'})).toBeInTheDocument();
     expect(RetroColumn).toHaveBeenCalledWith(expect.objectContaining({ category: mockRetro.template.categories[0] }), {});
     expect(RetroColumn).toHaveBeenCalledWith(expect.objectContaining({ category: mockRetro.template.categories[1] }), {});
   });

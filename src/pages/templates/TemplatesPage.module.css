@@ -1,0 +1,27 @@
+.templatesPage {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4rem 3rem;
+}
+
+.template {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.templateName {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+@media (max-width: 767px) {
+    .templatesPage {
+        padding: 0 1rem 2rem;
+    }
+}

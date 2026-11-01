@@ -1,14 +1,14 @@
 import styles from './CountSeparator.module.css';
 
 interface Props {
-    count: number
+    count?: number
 }
 
 export function CountSeparator({ count }: Props) {
     return (
         <div className={styles.separatorContainer}>
             <span className={`${styles.separator} ${styles.leftLine}`}/>
-            <span className={styles.count}>{count}</span>
+            {count !== undefined && <span className={styles.count}>{count}</span>}
             <span className={`${styles.separator} ${styles.rightLine}`}/>
         </div>
     )
